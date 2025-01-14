@@ -5,7 +5,7 @@ namespace FirstApi.Repositories.Interfaces
 {
     public interface ICityRepository
     {
-        //IEnumerable<City> GetCities();
+        //IEnumerable<City> GetCities(); 
         Task<IEnumerable<City>> GetCitiesAsync();
         Task<City?> GetCityAsync(int id , bool includePoints);
         Task CreateAsync(City city);
