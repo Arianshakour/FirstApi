@@ -23,6 +23,10 @@ namespace FirstApi.Controllers
         [HttpPost("authenticate")]
         public ActionResult<string> Authenticate(AuthenticationRequest req)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             var user = _auten.Validation(req.UserName, req.Password);
             if (user == null)
             {

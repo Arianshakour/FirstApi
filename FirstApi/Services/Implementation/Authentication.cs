@@ -1,4 +1,6 @@
-﻿using FirstApi.Entities;
+﻿using FirstApi.Common;
+using FirstApi.Context;
+using FirstApi.Entities;
 using FirstApi.Services.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,22 +14,18 @@ namespace FirstApi.Services.Implementation
 
         private readonly IConfiguration _configuration;
         //baraye dastresi be appsettings
+        private readonly CityContext _context;
 
-        public Authentication(IConfiguration configuration)
+        public Authentication(IConfiguration configuration ,CityContext context)
         {
             _configuration = configuration;
+            _context = context;
         }
 
-        public CityUser Validation(string? username, string? password)
+        public CityUser? Validation(string username, string password)
         {
-            var user = new CityUser()
-            {
-                UserName = username ?? "",
-                Password = password ?? "",
-                Name = "",
-                Family = "",
-                City = ""
-            };
+            string passToHash = PasswordHelper.EncodePasswordMd5(password);
+            var user = _context.CityUser.FirstOrDefault(x => x.UserName == username && x.Password == passToHash);
             return user;
         }
         public string GenerateToken(CityUser user)
